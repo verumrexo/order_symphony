@@ -1,6 +1,6 @@
 (function() {
 // Menu data structure with categories, items, and prices
-const DEFAULT_WINES = [
+const DEFAULT_MENU = [
   {
     "type": "category",
     "name": "DZIRKSTOŠIE VĪNI"
@@ -315,7 +315,7 @@ const DEFAULT_WINES = [
   }
 ];
 
-const PLACEHOLDER_WINES = [
+const PLACEHOLDER_MENU = [
     {
         "type": "category",
         "name": "DZIRKSTOŠIE VĪNI"
@@ -497,67 +497,67 @@ const ICONS = {
 };
 
 // Initialize the app
-let wines = {};
-let currentMenuData = DEFAULT_WINES;
+let orderState = {};
+let currentMenuData = DEFAULT_MENU;
 
-function initializeWines() {
-    const saved = localStorage.getItem('wines');
-    let savedWines = {};
+function initializeOrder() {
+    const saved = localStorage.getItem('order_symphony_data');
+    let savedOrders = {};
     if (saved) {
         try {
             const parsed = JSON.parse(saved);
             if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
-                savedWines = parsed;
+                savedOrders = parsed;
             }
         } catch (e) {
-            console.error('Failed to parse saved wines:', e);
+            console.error('Failed to parse saved orders:', e);
         }
     }
 
-    // Initialize wines object, preserving saved values if they exist
-    DEFAULT_WINES.forEach(entry => {
+    // Initialize orderState object, preserving saved values if they exist
+    DEFAULT_MENU.forEach(entry => {
         if (entry.type === 'item') {
-            wines[entry.name] = savedWines[entry.name] || 0;
+            orderState[entry.name] = savedOrders[entry.name] || 0;
         }
     });
 
-    PLACEHOLDER_WINES.forEach(entry => {
+    PLACEHOLDER_MENU.forEach(entry => {
         if (entry.type === 'item') {
-             if (!wines.hasOwnProperty(entry.name)) {
-                 wines[entry.name] = savedWines[entry.name] || 0;
+             if (!orderState.hasOwnProperty(entry.name)) {
+                 orderState[entry.name] = savedOrders[entry.name] || 0;
              }
         }
     });
 
     CIDO_DATA.forEach(entry => {
         if (entry.type === 'item') {
-             if (!wines.hasOwnProperty(entry.name)) {
-                 wines[entry.name] = savedWines[entry.name] || 0;
+             if (!orderState.hasOwnProperty(entry.name)) {
+                 orderState[entry.name] = savedOrders[entry.name] || 0;
              }
         }
     });
 }
 
-function saveWines() {
-    localStorage.setItem('wines', JSON.stringify(wines));
+function saveOrder() {
+    localStorage.setItem('order_symphony_data', JSON.stringify(orderState));
 }
 
 function switchMenu(menuName) {
     if (menuName === 'interbaltija') {
-        currentMenuData = DEFAULT_WINES;
+        currentMenuData = DEFAULT_MENU;
     } else if (menuName === 'placeholder') {
-        currentMenuData = PLACEHOLDER_WINES;
+        currentMenuData = PLACEHOLDER_MENU;
     } else if (menuName === 'cido') {
         currentMenuData = CIDO_DATA;
     }
-    renderWineList(currentMenuData);
+    renderOrderList(currentMenuData);
 }
 
-function renderWineList(menuData = currentMenuData) {
-    const wineList = document.getElementById('wineList');
-    if (!wineList) return;
+function renderOrderList(menuData = currentMenuData) {
+    const orderList = document.getElementById('orderList');
+    if (!orderList) return;
 
-    wineList.innerHTML = '';
+    orderList.innerHTML = '';
 
     let currentGroup = null;
     let currentCard = null;
@@ -566,23 +566,23 @@ function renderWineList(menuData = currentMenuData) {
         if (entry.type === 'category') {
             // Create new group
             currentGroup = document.createElement('div');
-            currentGroup.className = 'wine-group';
+            currentGroup.className = 'item-group';
 
             const header = document.createElement('h2');
-            header.className = 'wine-category-header';
+            header.className = 'category-header';
             header.textContent = entry.name;
             currentGroup.appendChild(header);
 
             // Create card container for items
             currentCard = document.createElement('div');
-            currentCard.className = 'wine-card';
+            currentCard.className = 'item-card';
             currentGroup.appendChild(currentCard);
 
-            wineList.appendChild(currentGroup);
+            orderList.appendChild(currentGroup);
         } else if (entry.type === 'description') {
             if (currentGroup) {
                  const desc = document.createElement('p');
-                 desc.className = 'wine-description';
+                 desc.className = 'item-description';
                  desc.textContent = entry.content;
                  currentGroup.insertBefore(desc, currentCard);
             }
@@ -590,73 +590,73 @@ function renderWineList(menuData = currentMenuData) {
             if (!currentCard) {
                 // Fallback
                 currentGroup = document.createElement('div');
-                currentGroup.className = 'wine-group';
+                currentGroup.className = 'item-group';
                 currentCard = document.createElement('div');
-                currentCard.className = 'wine-card';
+                currentCard.className = 'item-card';
                 currentGroup.appendChild(currentCard);
-                wineList.appendChild(currentGroup);
+                orderList.appendChild(currentGroup);
             }
 
-            const count = wines[entry.name] || 0;
+            const count = orderState[entry.name] || 0;
 
-            const wineItem = document.createElement('div');
-            wineItem.className = 'wine-item';
+            const orderItem = document.createElement('div');
+            orderItem.className = 'order-item';
 
             // Left: Info
-            const wineInfo = document.createElement('div');
-            wineInfo.className = 'wine-info';
+            const itemInfo = document.createElement('div');
+            itemInfo.className = 'item-info';
 
             const nameDiv = document.createElement('div');
-            nameDiv.className = 'wine-name';
+            nameDiv.className = 'item-name';
             nameDiv.textContent = entry.name;
 
-            wineInfo.appendChild(nameDiv);
+            itemInfo.appendChild(nameDiv);
 
             if (entry.price) {
                 const priceDiv = document.createElement('div');
-                priceDiv.className = 'wine-price';
+                priceDiv.className = 'item-price';
                 priceDiv.textContent = entry.price;
-                wineInfo.appendChild(priceDiv);
+                itemInfo.appendChild(priceDiv);
             }
 
             // Right: Counter
-            const wineCounter = document.createElement('div');
-            wineCounter.className = 'wine-counter';
+            const itemCounter = document.createElement('div');
+            itemCounter.className = 'item-counter';
 
             const minusBtn = document.createElement('button');
             minusBtn.className = 'counter-btn minus-btn';
-            minusBtn.dataset.wine = entry.name;
+            minusBtn.dataset.item = entry.name;
             minusBtn.innerHTML = ICONS.minus;
 
             const countDisplay = document.createElement('div');
             countDisplay.className = `count-display ${count > 0 ? 'active' : ''}`;
-            countDisplay.dataset.wine = entry.name;
+            countDisplay.dataset.item = entry.name;
             countDisplay.textContent = count;
 
             const plusBtn = document.createElement('button');
             plusBtn.className = 'counter-btn plus-btn';
-            plusBtn.dataset.wine = entry.name;
+            plusBtn.dataset.item = entry.name;
             plusBtn.innerHTML = ICONS.plus;
 
-            wineCounter.appendChild(minusBtn);
-            wineCounter.appendChild(countDisplay);
-            wineCounter.appendChild(plusBtn);
+            itemCounter.appendChild(minusBtn);
+            itemCounter.appendChild(countDisplay);
+            itemCounter.appendChild(plusBtn);
 
-            wineItem.appendChild(wineInfo);
-            wineItem.appendChild(wineCounter);
+            orderItem.appendChild(itemInfo);
+            orderItem.appendChild(itemCounter);
 
-            currentCard.appendChild(wineItem);
+            currentCard.appendChild(orderItem);
         }
     });
 
 }
 
-function updateWineCount(wineName) {
-    const safeName = wineName.replace(/"/g, '\\"');
-    const countDisplay = document.querySelector(`.count-display[data-wine="${safeName}"]`);
+function updateItemCount(itemName) {
+    const safeName = itemName.replace(/"/g, '\\"');
+    const countDisplay = document.querySelector(`.count-display[data-item="${safeName}"]`);
 
     if (countDisplay) {
-        const count = wines[wineName] || 0;
+        const count = orderState[itemName] || 0;
         countDisplay.textContent = count;
         if (count > 0) {
             countDisplay.classList.add('active');
@@ -667,24 +667,24 @@ function updateWineCount(wineName) {
 }
 
 function attachEventListeners() {
-    const wineList = document.getElementById('wineList');
-    wineList.addEventListener('click', (e) => {
+    const orderList = document.getElementById('orderList');
+    orderList.addEventListener('click', (e) => {
         const plusBtn = e.target.closest('.plus-btn');
         if (plusBtn) {
-            const wineName = plusBtn.dataset.wine;
-            wines[wineName] = (wines[wineName] || 0) + 1;
-            saveWines();
-            updateWineCount(wineName);
+            const itemName = plusBtn.dataset.item;
+            orderState[itemName] = (orderState[itemName] || 0) + 1;
+            saveOrder();
+            updateItemCount(itemName);
             return;
         }
 
         const minusBtn = e.target.closest('.minus-btn');
         if (minusBtn) {
-            const wineName = minusBtn.dataset.wine;
-            if (wines[wineName] > 0) {
-                wines[wineName]--;
-                saveWines();
-                updateWineCount(wineName);
+            const itemName = minusBtn.dataset.item;
+            if (orderState[itemName] > 0) {
+                orderState[itemName]--;
+                saveOrder();
+                updateItemCount(itemName);
             }
             return;
         }
@@ -700,12 +700,12 @@ function attachEventListeners() {
 }
 
 function copyToClipboard() {
-    const order = generateOrder(wines, currentMenuData);
+    const order = generateOrder(orderState, currentMenuData);
     
-    // Check if wines are selected (only in current menu)
-    // We can check if order string is "No wines selected." or empty
-    if (!order || order.trim() === 'No wines selected.') {
-        showFeedback('Please select at least one wine from the current list!', 'error');
+    // Check if items are selected (only in current menu)
+    // We can check if order string is "No items selected." or empty
+    if (!order || order.trim() === 'No items selected.') {
+        showFeedback('Please select at least one item from the current list!', 'error');
         return;
     }
 
@@ -724,15 +724,15 @@ function copyToClipboard() {
 }
 
 function resetCounts() {
-    // Only reset wines in the current menu
+    // Only reset items in the current menu
     currentMenuData.forEach(entry => {
         if (entry.type === 'item') {
-            wines[entry.name] = 0;
+            orderState[entry.name] = 0;
         }
     });
 
-    saveWines();
-    renderWineList();
+    saveOrder();
+    renderOrderList();
     showFeedback('Counters reset!');
 }
 
@@ -757,25 +757,25 @@ if (typeof document !== 'undefined') {
 // Initialize the app on page load
 if (typeof window !== 'undefined') {
     window.addEventListener('DOMContentLoaded', () => {
-        initializeWines();
-        renderWineList();
+        initializeOrder();
+        renderOrderList();
     });
 }
 
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
-        MENU_DATA: DEFAULT_WINES,
-        wines,
-        initializeWines,
-        saveWines,
+        MENU_DATA: DEFAULT_MENU,
+        orderState,
+        initializeOrder,
+        saveOrder,
         switchMenu,
         resetCounts,
-        renderWineList
+        renderOrderList
     };
 }
 window.addEventListener('DOMContentLoaded', () => {
-    initializeWines();
-    renderWineList();
+    initializeOrder();
+    renderOrderList();
     attachEventListeners();
 
 });

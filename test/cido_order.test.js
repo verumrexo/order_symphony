@@ -2,7 +2,7 @@ const { test } = require('node:test');
 const assert = require('node:assert');
 const { generateOrder } = require('../logic.js');
 
-// Mock Data Structure for Cido (based on plan)
+// Mock Data Structure for Cido
 const MOCK_CIDO_DATA = [
     { type: "category", name: "SOFT DRINKS" },
     {
@@ -42,7 +42,7 @@ const MOCK_CIDO_DATA = [
 ];
 
 test('generateOrder formats Cido items correctly', (t) => {
-    const winesState = {
+    const orderState = {
         'Pepsi': 4,
         'Kvass': 1
     };
@@ -52,12 +52,12 @@ test('generateOrder formats Cido items correctly', (t) => {
 Kvass: 1 muca
 `;
 
-    const actual = generateOrder(winesState, MOCK_CIDO_DATA);
+    const actual = generateOrder(orderState, MOCK_CIDO_DATA);
     assert.strictEqual(actual.trim(), expected.trim());
 });
 
 test('generateOrder separates Atgriešana items', (t) => {
-    const winesState = {
+    const orderState = {
         'Pepsi': 4,
         '15l mucas': 4,
         'Pilnas Pepsi kastes': 1
@@ -78,13 +78,13 @@ Atgriešana:
 Pilna Pepsi kaste: 1
 `;
 
-    const actual = generateOrder(winesState, MOCK_CIDO_DATA);
+    const actual = generateOrder(orderState, MOCK_CIDO_DATA);
     // Normalize newlines for strict equality check
     assert.strictEqual(actual.trim().replace(/\n+/g, '\n'), expected.trim().replace(/\n+/g, '\n'));
 });
 
 test('generateOrder handles mixed singular/plural for Atgriešana', (t) => {
-    const winesState = {
+    const orderState = {
         '15l mucas': 1, // Singular: 15l muca
         'Pilnas Pepsi kastes': 4 // Plural: Pilnas Pepsi kastes
     };
@@ -95,7 +95,7 @@ test('generateOrder handles mixed singular/plural for Atgriešana', (t) => {
 Pilnas Pepsi kastes: 4
 `;
 
-    const actual = generateOrder(winesState, MOCK_CIDO_DATA);
+    const actual = generateOrder(orderState, MOCK_CIDO_DATA);
     assert.strictEqual(actual.trim().replace(/\n+/g, '\n'), expected.trim().replace(/\n+/g, '\n'));
 });
 
@@ -105,11 +105,11 @@ test('generateOrder fallback for standard wines (no unit/labels)', (t) => {
         { type: "item", name: "Prosecco", price: "€10" }
     ];
 
-    const winesState = { 'Prosecco': 2 };
+    const orderState = { 'Prosecco': 2 };
 
     // Existing logic: if category is not 'ŪDENS', suffix is 'pud'
     const expected = `Prosecco: 2pud`;
 
-    const actual = generateOrder(winesState, MOCK_STANDARD_DATA);
+    const actual = generateOrder(orderState, MOCK_STANDARD_DATA);
     assert.strictEqual(actual.trim(), expected.trim());
 });
