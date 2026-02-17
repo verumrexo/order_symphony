@@ -86,21 +86,21 @@ function renderWineList() {
         wineItem.innerHTML = `
             <div class="wine-info">
                 <div class="wine-name"></div>
-                <div class="wine-count">Quantity: <span class="count-value"></span></div>
             </div>
             <div class="wine-counter">
-                <button class="plus-btn">+</button>
+                <button class="minus-btn">-</button>
                 <div class="count-display"></div>
+                <button class="plus-btn">+</button>
             </div>
         `;
         
         // Use textContent for safe data insertion
         wineItem.querySelector('.wine-name').textContent = wineName;
-        wineItem.querySelector('.count-value').textContent = count;
         wineItem.querySelector('.count-display').textContent = count;
 
         // Use dataset for safe attribute handling
         wineItem.querySelector('.plus-btn').dataset.wine = wineName;
+        wineItem.querySelector('.minus-btn').dataset.wine = wineName;
 
         wineList.appendChild(wineItem);
     });
@@ -112,6 +112,18 @@ function renderWineList() {
             wines[wineName]++;
             saveWines();
             renderWineList();
+        });
+    });
+
+    // Add event listeners to minus buttons
+    document.querySelectorAll('.minus-btn').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+            const wineName = e.target.dataset.wine;
+            if (wines[wineName] > 0) {
+                wines[wineName]--;
+                saveWines();
+                renderWineList();
+            }
         });
     });
 }
