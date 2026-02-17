@@ -78,6 +78,7 @@ function saveWines() {
 function renderWineList() {
     const wineList = document.getElementById('wineList');
     wineList.innerHTML = '';
+    const fragment = document.createDocumentFragment();
 
     Object.entries(wines).forEach(([wineName, count]) => {
         const wineItem = document.createElement('div');
@@ -94,8 +95,10 @@ function renderWineList() {
             </div>
         `;
         
-        wineList.appendChild(wineItem);
+        fragment.appendChild(wineItem);
     });
+
+    wineList.appendChild(fragment);
 
     // Add event listeners to plus buttons
     document.querySelectorAll('.plus-btn').forEach(btn => {
