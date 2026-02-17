@@ -1,5 +1,5 @@
 // Menu data structure with categories, items, and prices
-const MENU_DATA = [
+const DEFAULT_WINES = [
   {
     "type": "category",
     "name": "DZIRKSTOŠIE VĪNI"
@@ -362,11 +362,18 @@ function initializeWines() {
     const saved = localStorage.getItem('wines');
     let savedWines = {};
     if (saved) {
-        savedWines = JSON.parse(saved);
+        try {
+            const parsed = JSON.parse(saved);
+            if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+                savedWines = parsed;
+            }
+        } catch (e) {
+            console.error('Failed to parse saved wines:', e);
+        }
     }
 
     // Initialize wines object, preserving saved values if they exist
-    MENU_DATA.forEach(entry => {
+    DEFAULT_WINES.forEach(entry => {
         if (entry.type === 'item') {
             wines[entry.name] = savedWines[entry.name] || 0;
         }
@@ -384,7 +391,7 @@ function renderWineList() {
     let currentGroup = null;
     let currentCard = null;
 
-    MENU_DATA.forEach(entry => {
+    DEFAULT_WINES.forEach(entry => {
         if (entry.type === 'category') {
             // Create new group
             currentGroup = document.createElement('div');
