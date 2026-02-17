@@ -1,5 +1,6 @@
+(function() {
 // Menu data structure with categories, items, and prices
-const MENU_DATA = [
+const DEFAULT_WINES = [
   {
     "type": "category",
     "name": "DZIRKSTOŠIE VĪNI"
@@ -362,11 +363,18 @@ function initializeWines() {
     const saved = localStorage.getItem('wines');
     let savedWines = {};
     if (saved) {
-        savedWines = JSON.parse(saved);
+        try {
+            const parsed = JSON.parse(saved);
+            if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+                savedWines = parsed;
+            }
+        } catch (e) {
+            console.error('Failed to parse saved wines:', e);
+        }
     }
 
     // Initialize wines object, preserving saved values if they exist
-    MENU_DATA.forEach(entry => {
+    DEFAULT_WINES.forEach(entry => {
         if (entry.type === 'item') {
             wines[entry.name] = savedWines[entry.name] || 0;
         }
@@ -384,7 +392,7 @@ function renderWineList() {
     let currentGroup = null;
     let currentCard = null;
 
-    MENU_DATA.forEach(entry => {
+    DEFAULT_WINES.forEach(entry => {
         if (entry.type === 'category') {
             // Create new group
             currentGroup = document.createElement('div');
@@ -469,7 +477,6 @@ function renderWineList() {
         }
     });
 
-    attachEventListeners();
 }
 
 function updateWineCount(wineName) {
@@ -488,31 +495,32 @@ function updateWineCount(wineName) {
 }
 
 function attachEventListeners() {
-    // Add event listeners to plus buttons
-    document.querySelectorAll('.plus-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const wineName = e.currentTarget.dataset.wine;
+    const wineList = document.getElementById('wineList');
+    wineList.addEventListener('click', (e) => {
+        const plusBtn = e.target.closest('.plus-btn');
+        if (plusBtn) {
+            const wineName = plusBtn.dataset.wine;
             wines[wineName] = (wines[wineName] || 0) + 1;
             saveWines();
             updateWineCount(wineName);
-        });
-    });
+            return;
+        }
 
-    // Add event listeners to minus buttons
-    document.querySelectorAll('.minus-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const wineName = e.currentTarget.dataset.wine;
+        const minusBtn = e.target.closest('.minus-btn');
+        if (minusBtn) {
+            const wineName = minusBtn.dataset.wine;
             if (wines[wineName] > 0) {
                 wines[wineName]--;
                 saveWines();
                 updateWineCount(wineName);
             }
-        });
+            return;
+        }
     });
 }
 
 function copyToClipboard() {
-    const order = generateOrder(wines);
+    const order = generateOrder(wines, DEFAULT_WINES);
     
     // Check if wines are selected
     if (!Object.values(wines).some(count => count > 0)) {
@@ -556,11 +564,33 @@ function showFeedback(message, type = 'success') {
 }
 
 // Event listeners
-document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
-document.getElementById('resetBtn').addEventListener('click', resetCounts);
+if (typeof document !== 'undefined') {
+    document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+    document.getElementById('resetBtn').addEventListener('click', resetCounts);
+}
 
 // Initialize the app on page load
+if (typeof window !== 'undefined') {
+    window.addEventListener('DOMContentLoaded', () => {
+        initializeWines();
+        renderWineList();
+    });
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        MENU_DATA: DEFAULT_WINES,
+        wines,
+        initializeWines,
+        saveWines,
+        resetCounts,
+        renderWineList
+    };
+}
 window.addEventListener('DOMContentLoaded', () => {
     initializeWines();
     renderWineList();
+    attachEventListeners();
+
 });
+})();
