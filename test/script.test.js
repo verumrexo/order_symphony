@@ -26,10 +26,7 @@ const createMockElement = (tag) => ({
     classList: {
         add: () => {},
         remove: () => {}
-    },
-    // Mock getElementById for children
-    querySelector: () => null,
-    closest: () => null
+    }
 });
 
 const documentMock = {
@@ -60,56 +57,57 @@ global.navigator = navigatorMock;
 global.generateOrder = (wines) => "Mock Order";
 
 // Import script.js
-const { INTERBALTIJA_WINES, PLACEHOLDER_WINES, wines, initializeWines, resetCounts, switchMenu } = require('../script.js');
+const { MENU_DATA, wines, initializeWines, saveWines, resetCounts } = require('../script.js');
 
-test('Data structures', () => {
-    assert.ok(Array.isArray(INTERBALTIJA_WINES), 'INTERBALTIJA_WINES should be an array');
-    assert.ok(INTERBALTIJA_WINES.length > 0, 'INTERBALTIJA_WINES should not be empty');
-
-    assert.ok(Array.isArray(PLACEHOLDER_WINES), 'PLACEHOLDER_WINES should be an array');
-    assert.ok(PLACEHOLDER_WINES.length > 0, 'PLACEHOLDER_WINES should not be empty');
+test('MENU_DATA structure', () => {
+    assert.ok(Array.isArray(MENU_DATA), 'MENU_DATA should be an array');
+    assert.ok(MENU_DATA.length > 0, 'MENU_DATA should not be empty');
+    const item = MENU_DATA.find(e => e.type === 'item');
+    assert.ok(item, 'Should have at least one item');
+    assert.ok(item.name, 'Item should have a name');
+    assert.ok(item.price !== undefined, 'Item should have a price');
 });
 
-test('initializeWines initializes all wines to 0', () => {
+test('initializeWines loads data', () => {
     // Reset wines
     Object.keys(wines).forEach(key => delete wines[key]);
 
     // Test default init
     initializeWines();
-
-    const item1 = INTERBALTIJA_WINES.find(e => e.type === 'item');
-    assert.strictEqual(wines[item1.name], 0, 'Should initialize count to 0 for Interbaltija item');
-
-    const item2 = PLACEHOLDER_WINES.find(e => e.type === 'item');
-    assert.strictEqual(wines[item2.name], 0, 'Should initialize count to 0 for Placeholder item');
+    const item = MENU_DATA.find(e => e.type === 'item');
+    assert.strictEqual(wines[item.name], 0, 'Should initialize count to 0');
 });
 
-test('switchMenu updates visible list (indirectly via resetCounts check)', () => {
-    // We can't easily check currentMenuData directly unless exported,
-    // but we can check if resetCounts affects the correct wines.
+test('initializeWines loads from localStorage', () => {
+    const item = MENU_DATA.find(e => e.type === 'item');
+    const savedData = {};
+    savedData[item.name] = 5;
+    localStorage.setItem('wines', JSON.stringify(savedData));
+
+    // Reset wines
+    Object.keys(wines).forEach(key => delete wines[key]);
 
     initializeWines();
+    assert.strictEqual(wines[item.name], 5, 'Should load count from localStorage');
+});
 
-    const item1 = INTERBALTIJA_WINES.find(e => e.type === 'item');
-    const item2 = PLACEHOLDER_WINES.find(e => e.type === 'item');
+test('saveWines saves to localStorage', () => {
+    const item = MENU_DATA.find(e => e.type === 'item');
+    wines[item.name] = 3;
+    saveWines();
 
-    wines[item1.name] = 5;
-    wines[item2.name] = 5;
+    const saved = JSON.parse(localStorage.getItem('wines'));
+    assert.strictEqual(saved[item.name], 3, 'Should save count to localStorage');
+});
 
-    // Switch to Placeholder
-    switchMenu('placeholder');
+test('resetCounts resets all wines to 0', () => {
+    const item = MENU_DATA.find(e => e.type === 'item');
+    wines[item.name] = 10;
 
-    // Reset counts (should only reset Placeholder items)
     resetCounts();
 
-    assert.strictEqual(wines[item2.name], 0, 'Placeholder item should be reset');
-    assert.strictEqual(wines[item1.name], 5, 'Interbaltija item should NOT be reset');
+    assert.strictEqual(wines[item.name], 0, 'Should reset count to 0');
 
-    // Switch back to Interbaltija
-    switchMenu('interbaltija');
-
-    // Reset counts (should now reset Interbaltija items)
-    resetCounts();
-
-    assert.strictEqual(wines[item1.name], 0, 'Interbaltija item should be reset now');
+    const saved = JSON.parse(localStorage.getItem('wines'));
+    assert.strictEqual(saved[item.name], 0, 'Should save reset state to localStorage');
 });
