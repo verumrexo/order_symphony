@@ -470,6 +470,30 @@ function renderWineList() {
 
 }
 
+function attachEventListeners() {
+    const wineList = document.getElementById('wineList');
+    wineList.addEventListener('click', (e) => {
+        const plusBtn = e.target.closest('.plus-btn');
+        if (plusBtn) {
+            const wineName = plusBtn.dataset.wine;
+            wines[wineName] = (wines[wineName] || 0) + 1;
+            saveWines();
+            renderWineList();
+            return;
+        }
+
+        const minusBtn = e.target.closest('.minus-btn');
+        if (minusBtn) {
+            const wineName = minusBtn.dataset.wine;
+            if (wines[wineName] > 0) {
+                wines[wineName]--;
+                saveWines();
+                renderWineList();
+            }
+            return;
+        }
+    });
+}
 
 function copyToClipboard() {
     const order = generateOrder(wines);
@@ -523,6 +547,7 @@ document.getElementById('resetBtn').addEventListener('click', resetCounts);
 window.addEventListener('DOMContentLoaded', () => {
     initializeWines();
     renderWineList();
+    attachEventListeners();
 
     // Add event delegation for better performance
     document.getElementById('wineList').addEventListener('click', (e) => {
