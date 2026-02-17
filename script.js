@@ -375,47 +375,48 @@ function renderWineList() {
     const wineList = document.getElementById('wineList');
     wineList.innerHTML = '';
 
-    MENU_DATA.forEach(entry => {
-        if (entry.type === 'category') {
-            const categoryHeader = document.createElement('h2');
-            categoryHeader.className = 'wine-category';
-            categoryHeader.textContent = entry.name;
-            wineList.appendChild(categoryHeader);
-        } else if (entry.type === 'description') {
-            const description = document.createElement('p');
-            description.className = 'wine-description';
-            description.textContent = entry.content;
-            wineList.appendChild(description);
-        } else if (entry.type === 'item') {
-            const wineName = entry.name;
-            const count = wines[wineName];
+    Object.entries(wines).forEach(([wineName, count]) => {
+        const wineItem = document.createElement('div');
+        wineItem.className = 'wine-item';
+        
+        const wineInfo = document.createElement('div');
+        wineInfo.className = 'wine-info';
 
-            const wineItem = document.createElement('div');
-            wineItem.className = 'wine-item';
+        const wineNameDiv = document.createElement('div');
+        wineNameDiv.className = 'wine-name';
+        wineNameDiv.textContent = wineName;
 
-            wineItem.innerHTML = `
-                <div class="wine-info">
-                    <div class="wine-name"></div>
-                    <div class="wine-price"></div>
-                </div>
-                <div class="wine-counter">
-                    <button class="minus-btn">-</button>
-                    <div class="count-display"></div>
-                    <button class="plus-btn">+</button>
-                </div>
-            `;
+        const wineCountDiv = document.createElement('div');
+        wineCountDiv.className = 'wine-count';
+        wineCountDiv.textContent = 'Quantity: ';
 
-            // Use textContent for safe data insertion
-            wineItem.querySelector('.wine-name').textContent = wineName;
-            wineItem.querySelector('.wine-price').textContent = entry.price;
-            wineItem.querySelector('.count-display').textContent = count;
+        const countValueSpan = document.createElement('span');
+        countValueSpan.className = 'count-value';
+        countValueSpan.textContent = count;
+        wineCountDiv.appendChild(countValueSpan);
 
-            // Use dataset for safe attribute handling
-            wineItem.querySelector('.plus-btn').dataset.wine = wineName;
-            wineItem.querySelector('.minus-btn').dataset.wine = wineName;
+        wineInfo.appendChild(wineNameDiv);
+        wineInfo.appendChild(wineCountDiv);
 
-            wineList.appendChild(wineItem);
-        }
+        const wineCounter = document.createElement('div');
+        wineCounter.className = 'wine-counter';
+
+        const plusBtn = document.createElement('button');
+        plusBtn.className = 'plus-btn';
+        plusBtn.dataset.wine = wineName;
+        plusBtn.textContent = '+';
+
+        const countDisplay = document.createElement('div');
+        countDisplay.className = 'count-display';
+        countDisplay.textContent = count;
+
+        wineCounter.appendChild(plusBtn);
+        wineCounter.appendChild(countDisplay);
+
+        wineItem.appendChild(wineInfo);
+        wineItem.appendChild(wineCounter);
+        
+        wineList.appendChild(wineItem);
     });
 
     // Add event listeners to plus buttons
