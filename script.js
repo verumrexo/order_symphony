@@ -83,16 +83,42 @@ function renderWineList() {
         const wineItem = document.createElement('div');
         wineItem.className = 'wine-item';
         
-        wineItem.innerHTML = `
-            <div class="wine-info">
-                <div class="wine-name">${wineName}</div>
-                <div class="wine-count">Quantity: <span class="count-value">${count}</span></div>
-            </div>
-            <div class="wine-counter">
-                <button class="plus-btn" data-wine="${wineName}">+</button>
-                <div class="count-display">${count}</div>
-            </div>
-        `;
+        const wineInfo = document.createElement('div');
+        wineInfo.className = 'wine-info';
+
+        const wineNameDiv = document.createElement('div');
+        wineNameDiv.className = 'wine-name';
+        wineNameDiv.textContent = wineName;
+
+        const wineCountDiv = document.createElement('div');
+        wineCountDiv.className = 'wine-count';
+        wineCountDiv.textContent = 'Quantity: ';
+
+        const countValueSpan = document.createElement('span');
+        countValueSpan.className = 'count-value';
+        countValueSpan.textContent = count;
+        wineCountDiv.appendChild(countValueSpan);
+
+        wineInfo.appendChild(wineNameDiv);
+        wineInfo.appendChild(wineCountDiv);
+
+        const wineCounter = document.createElement('div');
+        wineCounter.className = 'wine-counter';
+
+        const plusBtn = document.createElement('button');
+        plusBtn.className = 'plus-btn';
+        plusBtn.dataset.wine = wineName;
+        plusBtn.textContent = '+';
+
+        const countDisplay = document.createElement('div');
+        countDisplay.className = 'count-display';
+        countDisplay.textContent = count;
+
+        wineCounter.appendChild(plusBtn);
+        wineCounter.appendChild(countDisplay);
+
+        wineItem.appendChild(wineInfo);
+        wineItem.appendChild(wineCounter);
         
         wineList.appendChild(wineItem);
     });
