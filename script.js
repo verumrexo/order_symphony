@@ -349,6 +349,12 @@ const MENU_DATA = [
   }
 ];
 
+// Icons
+const ICONS = {
+    plus: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>`,
+    minus: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>`
+};
+
 // Initialize the app
 let wines = {};
 
@@ -374,59 +380,103 @@ function saveWines() {
 function renderWineList() {
     const wineList = document.getElementById('wineList');
     wineList.innerHTML = '';
-    const fragment = document.createDocumentFragment();
 
-    Object.entries(wines).forEach(([wineName, count]) => {
-        const wineItem = document.createElement('div');
-        wineItem.className = 'wine-item';
-        
-        const wineInfo = document.createElement('div');
-        wineInfo.className = 'wine-info';
+    let currentGroup = null;
+    let currentCard = null;
 
-        const wineNameDiv = document.createElement('div');
-        wineNameDiv.className = 'wine-name';
-        wineNameDiv.textContent = wineName;
+    MENU_DATA.forEach(entry => {
+        if (entry.type === 'category') {
+            // Create new group
+            currentGroup = document.createElement('div');
+            currentGroup.className = 'wine-group';
 
-        const wineCountDiv = document.createElement('div');
-        wineCountDiv.className = 'wine-count';
-        wineCountDiv.textContent = 'Quantity: ';
+            const header = document.createElement('h2');
+            header.className = 'wine-category-header';
+            header.textContent = entry.name;
+            currentGroup.appendChild(header);
 
-        const countValueSpan = document.createElement('span');
-        countValueSpan.className = 'count-value';
-        countValueSpan.textContent = count;
-        wineCountDiv.appendChild(countValueSpan);
+            // Create card container for items
+            currentCard = document.createElement('div');
+            currentCard.className = 'wine-card';
+            currentGroup.appendChild(currentCard);
 
-        wineInfo.appendChild(wineNameDiv);
-        wineInfo.appendChild(wineCountDiv);
+            wineList.appendChild(currentGroup);
+        } else if (entry.type === 'description') {
+            if (currentGroup) {
+                 const desc = document.createElement('p');
+                 desc.className = 'wine-description';
+                 desc.textContent = entry.content;
+                 currentGroup.insertBefore(desc, currentCard);
+            }
+        } else if (entry.type === 'item') {
+            if (!currentCard) {
+                // Fallback
+                currentGroup = document.createElement('div');
+                currentGroup.className = 'wine-group';
+                currentCard = document.createElement('div');
+                currentCard.className = 'wine-card';
+                currentGroup.appendChild(currentCard);
+                wineList.appendChild(currentGroup);
+            }
 
-        const wineCounter = document.createElement('div');
-        wineCounter.className = 'wine-counter';
+            const count = wines[entry.name] || 0;
 
-        const plusBtn = document.createElement('button');
-        plusBtn.className = 'plus-btn';
-        plusBtn.dataset.wine = wineName;
-        plusBtn.textContent = '+';
+            const wineItem = document.createElement('div');
+            wineItem.className = 'wine-item';
 
-        const countDisplay = document.createElement('div');
-        countDisplay.className = 'count-display';
-        countDisplay.textContent = count;
+            // Left: Info
+            const wineInfo = document.createElement('div');
+            wineInfo.className = 'wine-info';
 
-        wineCounter.appendChild(plusBtn);
-        wineCounter.appendChild(countDisplay);
+            const nameDiv = document.createElement('div');
+            nameDiv.className = 'wine-name';
+            nameDiv.textContent = entry.name;
 
-        wineItem.appendChild(wineInfo);
-        wineItem.appendChild(wineCounter);
-        
-        fragment.appendChild(wineItem);
+            const priceDiv = document.createElement('div');
+            priceDiv.className = 'wine-price';
+            priceDiv.textContent = entry.price;
+
+            wineInfo.appendChild(nameDiv);
+            wineInfo.appendChild(priceDiv);
+
+            // Right: Counter
+            const wineCounter = document.createElement('div');
+            wineCounter.className = 'wine-counter';
+
+            const minusBtn = document.createElement('button');
+            minusBtn.className = 'counter-btn minus-btn';
+            minusBtn.dataset.wine = entry.name;
+            minusBtn.innerHTML = ICONS.minus;
+
+            const countDisplay = document.createElement('div');
+            countDisplay.className = `count-display ${count > 0 ? 'active' : ''}`;
+            countDisplay.textContent = count;
+
+            const plusBtn = document.createElement('button');
+            plusBtn.className = 'counter-btn plus-btn';
+            plusBtn.dataset.wine = entry.name;
+            plusBtn.innerHTML = ICONS.plus;
+
+            wineCounter.appendChild(minusBtn);
+            wineCounter.appendChild(countDisplay);
+            wineCounter.appendChild(plusBtn);
+
+            wineItem.appendChild(wineInfo);
+            wineItem.appendChild(wineCounter);
+
+            currentCard.appendChild(wineItem);
+        }
     });
 
-    wineList.appendChild(fragment);
+    attachEventListeners();
+}
 
+function attachEventListeners() {
     // Add event listeners to plus buttons
     document.querySelectorAll('.plus-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const wineName = e.target.dataset.wine;
-            wines[wineName]++;
+            const wineName = e.currentTarget.dataset.wine;
+            wines[wineName] = (wines[wineName] || 0) + 1;
             saveWines();
             renderWineList();
         });
@@ -435,7 +485,7 @@ function renderWineList() {
     // Add event listeners to minus buttons
     document.querySelectorAll('.minus-btn').forEach(btn => {
         btn.addEventListener('click', (e) => {
-            const wineName = e.target.dataset.wine;
+            const wineName = e.currentTarget.dataset.wine;
             if (wines[wineName] > 0) {
                 wines[wineName]--;
                 saveWines();
@@ -481,10 +531,11 @@ function showFeedback(message, type = 'success') {
     const feedback = document.getElementById('feedback');
     feedback.textContent = message;
     feedback.className = 'feedback';
+    feedback.classList.add('show');
     
     // Auto hide after 3 seconds
     setTimeout(() => {
-        feedback.textContent = '';
+        feedback.classList.remove('show');
     }, 3000);
 }
 
