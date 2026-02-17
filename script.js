@@ -442,33 +442,8 @@ function renderWineList() {
     });
 }
 
-function generateOrder() {
-    let order = '';
-    let hasItems = false;
-    let currentCategory = '';
-
-    MENU_DATA.forEach(entry => {
-        if (entry.type === 'category') {
-            currentCategory = entry.name;
-        } else if (entry.type === 'item') {
-            const count = wines[entry.name];
-            if (count > 0) {
-                hasItems = true;
-                const suffix = currentCategory === 'ŪDENS' ? 'kastes' : 'pud';
-                order += `${entry.name} ${count}${suffix}\n`;
-            }
-        }
-    });
-
-    if (!hasItems) {
-        order += 'No wines selected.\n';
-    }
-
-    return order;
-}
-
 function copyToClipboard() {
-    const order = generateOrder();
+    const order = generateOrder(wines);
     
     // Check if wines are selected
     if (!Object.values(wines).some(count => count > 0)) {

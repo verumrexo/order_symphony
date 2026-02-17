@@ -1,0 +1,21 @@
+{
+  "name": "app",
+  "version": "1.0.0",
+  "description": "A simple, elegant web-based wine tracker that helps you build your wine order list easily. Click the plus button on wines you want, then copy the formatted list to send to your wine provider.",
+  "main": "script.js",
+  "scripts": {
+    "test": "node --test test/*.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/verumrexo/wine_tracker.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/verumrexo/wine_tracker/issues"
+  },
+  "homepage": "https://github.com/verumrexo/wine_tracker#readme"
+}
