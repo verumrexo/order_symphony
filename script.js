@@ -138,7 +138,7 @@ function generateOrder() {
     Object.entries(wines).forEach(([wineName, count]) => {
         if (count > 0) {
             hasItems = true;
-            order += `${wineName}: ${count}\n`;
+            order += `${wineName} ${count}pud\n`;
             totalBottles += count;
         }
     });
