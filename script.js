@@ -7,11 +7,6 @@ const DEFAULT_WINES = [
   },
   {
     "type": "item",
-    "name": "Domus Picta Prosecco, Valdobbiadene, Italy (75cl)",
-    "price": "€6.50 / €29.00"
-  },
-  {
-    "type": "item",
     "name": "Contadi Castaldi Franciacorta Brut, Lombardia, Italy (37.5cl)",
     "price": "€29.00"
   },
@@ -24,11 +19,6 @@ const DEFAULT_WINES = [
     "type": "item",
     "name": "Tissot-Maire Cremant du Jura, Blanc de Blancs Brut, France (75cl)",
     "price": "€32.00"
-  },
-  {
-    "type": "item",
-    "name": "Les Cocottes Chardonnay non-alcoholic (75cl)",
-    "price": "€6.00 / €28.00"
   },
   {
     "type": "category",
@@ -94,23 +84,8 @@ const DEFAULT_WINES = [
   },
   {
     "type": "item",
-    "name": "Dollfly river Sauvignon Blanc Marlborgugh, New Zealand (75 cl)",
-    "price": "€6.50 / €29.00"
-  },
-  {
-    "type": "item",
     "name": "Cascas Vinho Verde, Portugal (75 cl)",
     "price": "€18.00"
-  },
-  {
-    "type": "item",
-    "name": "Aragosta Vermentino Di Sardegna (75cl)",
-    "price": "€21.00"
-  },
-  {
-    "type": "item",
-    "name": "La Villete Chardonnay, France (75cl)",
-    "price": "€21.00"
   },
   {
     "type": "item",
@@ -143,11 +118,6 @@ const DEFAULT_WINES = [
   },
   {
     "type": "item",
-    "name": "Zuccardi Serie A, Malbec, Argentina (75 cl)",
-    "price": "€6.50 / €29.00"
-  },
-  {
-    "type": "item",
     "name": "Cascas Tinto, Lisboa, Portugal (75 cl)",
     "price": "€18.00"
   },
@@ -165,11 +135,6 @@ const DEFAULT_WINES = [
     "type": "item",
     "name": "Salentein Killka Malbec Uco Valley, Mendoza, Argentina (75 cl)",
     "price": "€29.00"
-  },
-  {
-    "type": "item",
-    "name": "Conte di Campiano Riserva Primitivo, Italy (75 cl)",
-    "price": "€25.00"
   },
   {
     "type": "item",
@@ -350,6 +315,56 @@ const DEFAULT_WINES = [
   }
 ];
 
+const PLACEHOLDER_WINES = [
+    {
+        "type": "category",
+        "name": "DZIRKSTOŠIE VĪNI"
+    },
+    {
+        "type": "item",
+        "name": "Domus Picta Prosecco, Valdobbiadene, Italy (75cl)",
+        "price": "€6.50 / €29.00"
+    },
+    {
+        "type": "item",
+        "name": "Les Cocottes Chardonnay non-alcoholic (75cl)",
+        "price": "€6.00 / €28.00"
+    },
+    {
+        "type": "category",
+        "name": "BALTVĪNI"
+    },
+    {
+        "type": "item",
+        "name": "Dollfly river Sauvignon Blanc Marlborgugh, New Zealand (75 cl)",
+        "price": "€6.50 / €29.00"
+    },
+    {
+        "type": "item",
+        "name": "Aragosta Vermentino Di Sardegna (75cl)",
+        "price": "€21.00"
+    },
+    {
+        "type": "item",
+        "name": "La Villete Chardonnay, France (75cl)",
+        "price": "€21.00"
+    },
+    {
+        "type": "category",
+        "name": "SARKANVĪNI"
+    },
+    {
+        "type": "item",
+        "name": "Zuccardi Serie A, Malbec, Argentina (75 cl)",
+        "price": "€6.50 / €29.00"
+    },
+    {
+        "type": "item",
+        "name": "Conte di Campiano Riserva Primitivo, Italy (75 cl)",
+        "price": "€25.00"
+    }
+];
+
 // Icons
 const ICONS = {
     plus: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>`,
@@ -358,6 +373,7 @@ const ICONS = {
 
 // Initialize the app
 let wines = {};
+let currentMenuData = INTERBALTIJA_WINES;
 
 function initializeWines() {
     const saved = localStorage.getItem('wines');
@@ -381,12 +397,10 @@ function initializeWines() {
     });
 }
 
-function saveWines() {
-    localStorage.setItem('wines', JSON.stringify(wines));
-}
-
-function renderWineList() {
+function renderWineList(menuData = currentMenuData) {
     const wineList = document.getElementById('wineList');
+    if (!wineList) return;
+
     wineList.innerHTML = '';
 
     let currentGroup = null;
@@ -517,14 +531,23 @@ function attachEventListeners() {
             return;
         }
     });
+
+    // Menu Selector
+    const menuSelector = document.getElementById('menuSelector');
+    if (menuSelector) {
+        menuSelector.addEventListener('change', (e) => {
+            switchMenu(e.target.value);
+        });
+    }
 }
 
 function copyToClipboard() {
     const order = generateOrder(wines, DEFAULT_WINES);
     
-    // Check if wines are selected
-    if (!Object.values(wines).some(count => count > 0)) {
-        showFeedback('Please select at least one wine!', 'error');
+    // Check if wines are selected (only in current menu)
+    // We can check if order string is "No wines selected." or empty
+    if (!order || order.trim() === 'No wines selected.') {
+        showFeedback('Please select at least one wine from the current list!', 'error');
         return;
     }
 
@@ -543,10 +566,13 @@ function copyToClipboard() {
 }
 
 function resetCounts() {
-    Object.keys(wines).forEach(wine => {
-        wines[wine] = 0;
+    // Only reset wines in the current menu
+    currentMenuData.forEach(entry => {
+        if (entry.type === 'item') {
+            wines[entry.name] = 0;
+        }
     });
-    saveWines();
+
     renderWineList();
     showFeedback('Counters reset!');
 }
