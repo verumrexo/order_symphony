@@ -1,7 +1,6 @@
 (function() {
 // Menu data structure with categories, items, and prices
-
-const INTERBALTIJA_WINES = [
+const DEFAULT_WINES = [
   {
     "type": "category",
     "name": "DZIRKSTOŠIE VĪNI"
@@ -377,17 +376,24 @@ let wines = {};
 let currentMenuData = INTERBALTIJA_WINES;
 
 function initializeWines() {
-    // Reset or initialize wines object
-    for (let key in wines) delete wines[key];
-
-    // Initialize wines for both lists to ensure state exists
-    const allLists = [INTERBALTIJA_WINES, PLACEHOLDER_WINES];
-    allLists.forEach(list => {
-        list.forEach(entry => {
-            if (entry.type === 'item') {
-                wines[entry.name] = 0;
+    const saved = localStorage.getItem('wines');
+    let savedWines = {};
+    if (saved) {
+        try {
+            const parsed = JSON.parse(saved);
+            if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) {
+                savedWines = parsed;
             }
-        });
+        } catch (e) {
+            console.error('Failed to parse saved wines:', e);
+        }
+    }
+
+    // Initialize wines object, preserving saved values if they exist
+    DEFAULT_WINES.forEach(entry => {
+        if (entry.type === 'item') {
+            wines[entry.name] = savedWines[entry.name] || 0;
+        }
     });
 }
 
@@ -400,7 +406,7 @@ function renderWineList(menuData = currentMenuData) {
     let currentGroup = null;
     let currentCard = null;
 
-    menuData.forEach(entry => {
+    DEFAULT_WINES.forEach(entry => {
         if (entry.type === 'category') {
             // Create new group
             currentGroup = document.createElement('div');
@@ -466,6 +472,7 @@ function renderWineList(menuData = currentMenuData) {
 
             const countDisplay = document.createElement('div');
             countDisplay.className = `count-display ${count > 0 ? 'active' : ''}`;
+            countDisplay.dataset.wine = entry.name;
             countDisplay.textContent = count;
 
             const plusBtn = document.createElement('button');
@@ -486,13 +493,19 @@ function renderWineList(menuData = currentMenuData) {
 
 }
 
-function switchMenu(menuName) {
-    if (menuName === 'placeholder') {
-        currentMenuData = PLACEHOLDER_WINES;
-    } else {
-        currentMenuData = INTERBALTIJA_WINES;
+function updateWineCount(wineName) {
+    const safeName = wineName.replace(/"/g, '\\"');
+    const countDisplay = document.querySelector(`.count-display[data-wine="${safeName}"]`);
+
+    if (countDisplay) {
+        const count = wines[wineName] || 0;
+        countDisplay.textContent = count;
+        if (count > 0) {
+            countDisplay.classList.add('active');
+        } else {
+            countDisplay.classList.remove('active');
+        }
     }
-    renderWineList();
 }
 
 function attachEventListeners() {
@@ -502,8 +515,8 @@ function attachEventListeners() {
         if (plusBtn) {
             const wineName = plusBtn.dataset.wine;
             wines[wineName] = (wines[wineName] || 0) + 1;
-            // Removed saveWines();
-            renderWineList();
+            saveWines();
+            updateWineCount(wineName);
             return;
         }
 
@@ -512,8 +525,8 @@ function attachEventListeners() {
             const wineName = minusBtn.dataset.wine;
             if (wines[wineName] > 0) {
                 wines[wineName]--;
-                // Removed saveWines();
-                renderWineList();
+                saveWines();
+                updateWineCount(wineName);
             }
             return;
         }
@@ -529,7 +542,7 @@ function attachEventListeners() {
 }
 
 function copyToClipboard() {
-    const order = generateOrder(wines, currentMenuData);
+    const order = generateOrder(wines, DEFAULT_WINES);
     
     // Check if wines are selected (only in current menu)
     // We can check if order string is "No wines selected." or empty
@@ -587,19 +600,23 @@ if (typeof window !== 'undefined') {
     window.addEventListener('DOMContentLoaded', () => {
         initializeWines();
         renderWineList();
-        attachEventListeners();
     });
 }
 
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
-        INTERBALTIJA_WINES,
-        PLACEHOLDER_WINES,
+        MENU_DATA: DEFAULT_WINES,
         wines,
         initializeWines,
+        saveWines,
         resetCounts,
-        renderWineList,
-        switchMenu
+        renderWineList
     };
 }
+window.addEventListener('DOMContentLoaded', () => {
+    initializeWines();
+    renderWineList();
+    attachEventListeners();
+
+});
 })();
