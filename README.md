@@ -58,3 +58,16 @@ const DEFAULT_WINES = [
 ## Browser Support
 
 Works in all modern browsers (Chrome, Firefox, Safari, Edge). Uses localStorage to remember your selections.
+
+## Deployment
+
+This project uses GitHub Actions to deploy to GitHub Pages.
+
+1.  The workflow in `.github/workflows/pages.yml` automatically deploys changes from the `main` branch to the `gh-pages` branch.
+2.  **Important:** You must configure your repository settings to serve the site from the `gh-pages` branch:
+    *   Go to **Settings** > **Pages**.
+    *   Under **Build and deployment**, select **Source** as **Deploy from a branch**.
+    *   Under **Branch**, select **gh-pages** and ensure the folder is **/(root)**.
+    *   Click **Save**.
+
+After saving, your site should be live at the URL displayed at the top of the Pages settings.
