@@ -373,7 +373,7 @@ const ICONS = {
 
 // Initialize the app
 let wines = {};
-let currentMenuData = INTERBALTIJA_WINES;
+let currentMenuData = DEFAULT_WINES;
 
 function initializeWines() {
     const saved = localStorage.getItem('wines');
@@ -395,6 +395,27 @@ function initializeWines() {
             wines[entry.name] = savedWines[entry.name] || 0;
         }
     });
+
+    PLACEHOLDER_WINES.forEach(entry => {
+        if (entry.type === 'item') {
+             if (!wines.hasOwnProperty(entry.name)) {
+                 wines[entry.name] = savedWines[entry.name] || 0;
+             }
+        }
+    });
+}
+
+function saveWines() {
+    localStorage.setItem('wines', JSON.stringify(wines));
+}
+
+function switchMenu(menuName) {
+    if (menuName === 'interbaltija') {
+        currentMenuData = DEFAULT_WINES;
+    } else if (menuName === 'placeholder') {
+        currentMenuData = PLACEHOLDER_WINES;
+    }
+    renderWineList(currentMenuData);
 }
 
 function renderWineList(menuData = currentMenuData) {
@@ -406,7 +427,7 @@ function renderWineList(menuData = currentMenuData) {
     let currentGroup = null;
     let currentCard = null;
 
-    DEFAULT_WINES.forEach(entry => {
+    menuData.forEach(entry => {
         if (entry.type === 'category') {
             // Create new group
             currentGroup = document.createElement('div');
@@ -542,7 +563,7 @@ function attachEventListeners() {
 }
 
 function copyToClipboard() {
-    const order = generateOrder(wines, DEFAULT_WINES);
+    const order = generateOrder(wines, currentMenuData);
     
     // Check if wines are selected (only in current menu)
     // We can check if order string is "No wines selected." or empty
@@ -573,6 +594,7 @@ function resetCounts() {
         }
     });
 
+    saveWines();
     renderWineList();
     showFeedback('Counters reset!');
 }
@@ -609,6 +631,7 @@ if (typeof module !== 'undefined' && module.exports) {
         wines,
         initializeWines,
         saveWines,
+        switchMenu,
         resetCounts,
         renderWineList
     };
