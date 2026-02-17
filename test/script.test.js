@@ -23,6 +23,7 @@ const createMockElement = (tag) => ({
     appendChild: () => {},
     insertBefore: () => {},
     addEventListener: () => {},
+    setAttribute: () => {},
     classList: {
         add: () => {},
         remove: () => {}
