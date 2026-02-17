@@ -540,11 +540,26 @@ function showFeedback(message, type = 'success') {
 }
 
 // Event listeners
-document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
-document.getElementById('resetBtn').addEventListener('click', resetCounts);
+if (typeof document !== 'undefined') {
+    document.getElementById('copyBtn').addEventListener('click', copyToClipboard);
+    document.getElementById('resetBtn').addEventListener('click', resetCounts);
+}
 
 // Initialize the app on page load
-window.addEventListener('DOMContentLoaded', () => {
-    initializeWines();
-    renderWineList();
-});
+if (typeof window !== 'undefined') {
+    window.addEventListener('DOMContentLoaded', () => {
+        initializeWines();
+        renderWineList();
+    });
+}
+
+if (typeof module !== 'undefined' && module.exports) {
+    module.exports = {
+        MENU_DATA,
+        wines,
+        initializeWines,
+        saveWines,
+        resetCounts,
+        renderWineList
+    };
+}
