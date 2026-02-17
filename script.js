@@ -1,3 +1,4 @@
+(function() {
 // Menu data structure with categories, items, and prices
 const DEFAULT_WINES = [
   {
@@ -595,3 +596,4 @@ window.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+})();
