@@ -1,26 +1,37 @@
-function generateOrder(winesState) {
-    let order = 'WINE ORDER\n';
-    order += '='.repeat(40) + '\n\n';
-
+function generateOrder(winesState, menuData = []) {
+    let order = '';
     let hasItems = false;
-    let totalBottles = 0;
+
+    // Build category map if menuData is provided
+    const wineCategoryMap = {};
+    if (menuData && Array.isArray(menuData)) {
+        let currentCategory = '';
+        menuData.forEach(entry => {
+            if (entry.type === 'category') {
+                currentCategory = entry.name;
+            } else if (entry.type === 'item') {
+                wineCategoryMap[entry.name] = currentCategory;
+            }
+        });
+    }
 
     if (winesState) {
         Object.entries(winesState).forEach(([wineName, count]) => {
             const numCount = parseInt(count, 10);
             if (!isNaN(numCount) && numCount > 0) {
                 hasItems = true;
-                order += `${wineName}: ${numCount}\n`;
-                totalBottles += numCount;
+
+                // Determine suffix
+                const category = wineCategoryMap[wineName];
+                const suffix = (category === 'ŪDENS') ? 'kastes' : 'pud';
+
+                order += `${wineName}: ${numCount}${suffix}\n`;
             }
         });
     }
 
     if (!hasItems) {
         order += 'No wines selected.\n';
-    } else {
-        order += '\n' + '='.repeat(40) + '\n';
-        order += `Total Bottles: ${totalBottles}\n`;
     }
 
     return order;

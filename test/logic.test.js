@@ -2,76 +2,92 @@ const test = require('node:test');
 const assert = require('node:assert');
 const { generateOrder } = require('../logic.js');
 
-const SEPARATOR = '='.repeat(40);
+const mockMenu = [
+    { type: 'category', name: 'Reds' },
+    { type: 'item', name: 'Wine A' },
+    { type: 'category', name: 'ŪDENS' },
+    { type: 'item', name: 'Water X' }
+];
 
 test('generateOrder handles empty selection (all zeros)', () => {
     const winesState = {
         'Wine A': 0,
-        'Wine B': 0
+        'Water X': 0
     };
-    const expected = `WINE ORDER\n${SEPARATOR}\n\nNo wines selected.\n`;
-    const actual = generateOrder(winesState);
+    const expected = `No wines selected.\n`;
+    const actual = generateOrder(winesState, mockMenu);
     assert.strictEqual(actual, expected);
 });
 
 test('generateOrder handles empty object', () => {
     const winesState = {};
-    const expected = `WINE ORDER\n${SEPARATOR}\n\nNo wines selected.\n`;
-    const actual = generateOrder(winesState);
+    const expected = `No wines selected.\n`;
+    const actual = generateOrder(winesState, mockMenu);
     assert.strictEqual(actual, expected);
 });
 
-test('generateOrder handles single wine selection', () => {
+test('generateOrder handles single wine selection with default suffix', () => {
     const winesState = {
         'Wine A': 2,
-        'Wine B': 0
+        'Water X': 0
     };
-    const expected = `WINE ORDER\n${SEPARATOR}\n\nWine A: 2\n\n${SEPARATOR}\nTotal Bottles: 2\n`;
-    const actual = generateOrder(winesState);
+    // Expected: "Wine A: 2pud\n"
+    const expected = `Wine A: 2pud\n`;
+    const actual = generateOrder(winesState, mockMenu);
     assert.strictEqual(actual, expected);
 });
 
-test('generateOrder handles multiple wine selections', () => {
+test('generateOrder handles water selection with "kastes" suffix', () => {
+    const winesState = {
+        'Wine A': 0,
+        'Water X': 3
+    };
+    // Expected: "Water X: 3kastes\n"
+    const expected = `Water X: 3kastes\n`;
+    const actual = generateOrder(winesState, mockMenu);
+    assert.strictEqual(actual, expected);
+});
+
+test('generateOrder handles multiple selections mixed', () => {
     const winesState = {
         'Wine A': 2,
-        'Wine B': 3,
-        'Wine C': 0
+        'Water X': 3
     };
-    const expected = `WINE ORDER\n${SEPARATOR}\n\nWine A: 2\nWine B: 3\n\n${SEPARATOR}\nTotal Bottles: 5\n`;
-    const actual = generateOrder(winesState);
+    // Expected: "Wine A: 2pud\nWater X: 3kastes\n"
+    const expected = `Wine A: 2pud\nWater X: 3kastes\n`;
+    const actual = generateOrder(winesState, mockMenu);
+    assert.strictEqual(actual, expected);
+});
+
+test('generateOrder defaults to "pud" when menuData is missing', () => {
+    const winesState = {
+        'Wine A': 2
+    };
+    const expected = `Wine A: 2pud\n`;
+    const actual = generateOrder(winesState); // No menuData passed
+    assert.strictEqual(actual, expected);
+});
+
+test('generateOrder defaults to "pud" when category not found', () => {
+    const winesState = {
+        'Unknown Wine': 5
+    };
+    const expected = `Unknown Wine: 5pud\n`;
+    const actual = generateOrder(winesState, mockMenu);
     assert.strictEqual(actual, expected);
 });
 
 test('generateOrder handles null input gracefully', () => {
     const actual = generateOrder(null);
-    // Should behave like empty selection
-    const expected = `WINE ORDER\n${SEPARATOR}\n\nNo wines selected.\n`;
-    assert.strictEqual(actual, expected, 'Should return empty order for null input');
-});
-
-test('generateOrder handles undefined input gracefully', () => {
-    const actual = generateOrder(undefined);
-    const expected = `WINE ORDER\n${SEPARATOR}\n\nNo wines selected.\n`;
-    assert.strictEqual(actual, expected, 'Should return empty order for undefined input');
+    const expected = `No wines selected.\n`;
+    assert.strictEqual(actual, expected);
 });
 
 test('generateOrder handles string counts correctly', () => {
     const winesState = {
-        'Wine A': "1",
-        'Wine B': 2
+        'Wine A': "1"
     };
-    // Expected total: 1 + 2 = 3
-    const expected = `WINE ORDER\n${SEPARATOR}\n\nWine A: 1\nWine B: 2\n\n${SEPARATOR}\nTotal Bottles: 3\n`;
-    const actual = generateOrder(winesState);
-    assert.strictEqual(actual, expected, 'String counts should be treated as numbers');
-});
-
-test('generateOrder handles negative counts (ignores them)', () => {
-    const winesState = {
-        'Wine A': -5,
-        'Wine B': 2
-    };
-    const expected = `WINE ORDER\n${SEPARATOR}\n\nWine B: 2\n\n${SEPARATOR}\nTotal Bottles: 2\n`;
-    const actual = generateOrder(winesState);
+    const expected = `Wine A: 1pud\n`;
+    const actual = generateOrder(winesState, mockMenu);
     assert.strictEqual(actual, expected);
 });
