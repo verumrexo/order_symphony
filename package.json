@@ -1,7 +1,7 @@
 {
-  "name": "app",
+  "name": "order-symphony",
   "version": "1.0.0",
-  "description": "A simple, elegant web-based wine tracker that helps you build your wine order list easily. Click the plus button on wines you want, then copy the formatted list to send to your wine provider.",
+  "description": "A tool to create a list of things to order, so you can send it to your distributors.",
   "main": "script.js",
   "scripts": {
     "test": "node --test test/*.test.js"
@@ -10,7 +10,12 @@
     "type": "git",
     "url": "git+https://github.com/verumrexo/wine_tracker.git"
   },
-  "keywords": [],
+  "keywords": [
+    "order",
+    "list",
+    "distributor",
+    "tracker"
+  ],
   "author": "",
   "license": "ISC",
   "type": "commonjs",

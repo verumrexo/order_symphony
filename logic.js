@@ -1,15 +1,15 @@
-function generateOrder(winesState, menuData = []) {
+function generateOrder(orderState, menuData = []) {
     let standardItems = [];
     let returnItems = [];
     let hasItems = false;
     let currentCategory = '';
 
-    if (winesState && menuData && Array.isArray(menuData) && menuData.length > 0) {
+    if (orderState && menuData && Array.isArray(menuData) && menuData.length > 0) {
         menuData.forEach(entry => {
             if (entry.type === 'category') {
                 currentCategory = entry.name;
             } else if (entry.type === 'item') {
-                const count = winesState[entry.name];
+                const count = orderState[entry.name];
                 const numCount = parseInt(count, 10);
 
                 if (!isNaN(numCount) && numCount > 0) {
@@ -40,19 +40,19 @@ function generateOrder(winesState, menuData = []) {
                 }
             }
         });
-    } else if (winesState) {
+    } else if (orderState) {
         // Fallback if menuData is not provided
-        Object.entries(winesState).forEach(([wineName, count]) => {
+        Object.entries(orderState).forEach(([itemName, count]) => {
             const numCount = parseInt(count, 10);
             if (!isNaN(numCount) && numCount > 0) {
                 hasItems = true;
-                standardItems.push(`${wineName}: ${numCount}pud`);
+                standardItems.push(`${itemName}: ${numCount}pud`);
             }
         });
     }
 
     if (!hasItems) {
-        return 'No wines selected.\n';
+        return 'No items selected.\n';
     }
 
     let parts = [];
