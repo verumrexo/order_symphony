@@ -450,6 +450,7 @@ function renderWineList() {
 
             const countDisplay = document.createElement('div');
             countDisplay.className = `count-display ${count > 0 ? 'active' : ''}`;
+            countDisplay.dataset.wine = entry.name;
             countDisplay.textContent = count;
 
             const plusBtn = document.createElement('button');
@@ -471,6 +472,21 @@ function renderWineList() {
     attachEventListeners();
 }
 
+function updateWineCount(wineName) {
+    const safeName = wineName.replace(/"/g, '\\"');
+    const countDisplay = document.querySelector(`.count-display[data-wine="${safeName}"]`);
+
+    if (countDisplay) {
+        const count = wines[wineName] || 0;
+        countDisplay.textContent = count;
+        if (count > 0) {
+            countDisplay.classList.add('active');
+        } else {
+            countDisplay.classList.remove('active');
+        }
+    }
+}
+
 function attachEventListeners() {
     // Add event listeners to plus buttons
     document.querySelectorAll('.plus-btn').forEach(btn => {
@@ -478,7 +494,7 @@ function attachEventListeners() {
             const wineName = e.currentTarget.dataset.wine;
             wines[wineName] = (wines[wineName] || 0) + 1;
             saveWines();
-            renderWineList();
+            updateWineCount(wineName);
         });
     });
 
@@ -489,7 +505,7 @@ function attachEventListeners() {
             if (wines[wineName] > 0) {
                 wines[wineName]--;
                 saveWines();
-                renderWineList();
+                updateWineCount(wineName);
             }
         });
     });
