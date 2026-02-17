@@ -444,13 +444,17 @@ function renderWineList() {
 function generateOrder() {
     let order = '';
     let hasItems = false;
+    let currentCategory = '';
 
     MENU_DATA.forEach(entry => {
-        if (entry.type === 'item') {
+        if (entry.type === 'category') {
+            currentCategory = entry.name;
+        } else if (entry.type === 'item') {
             const count = wines[entry.name];
             if (count > 0) {
                 hasItems = true;
-                order += `${entry.name} ${count}pud\n`;
+                const suffix = currentCategory === 'ŪDENS' ? 'kastes' : 'pud';
+                order += `${entry.name} ${count}${suffix}\n`;
             }
         }
     });
