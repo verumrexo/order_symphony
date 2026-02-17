@@ -5,13 +5,16 @@ function generateOrder(winesState) {
     let hasItems = false;
     let totalBottles = 0;
 
-    Object.entries(winesState).forEach(([wineName, count]) => {
-        if (count > 0) {
-            hasItems = true;
-            order += `${wineName}: ${count}\n`;
-            totalBottles += count;
-        }
-    });
+    if (winesState) {
+        Object.entries(winesState).forEach(([wineName, count]) => {
+            const numCount = parseInt(count, 10);
+            if (!isNaN(numCount) && numCount > 0) {
+                hasItems = true;
+                order += `${wineName}: ${numCount}\n`;
+                totalBottles += numCount;
+            }
+        });
+    }
 
     if (!hasItems) {
         order += 'No wines selected.\n';
