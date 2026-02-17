@@ -85,15 +85,23 @@ function renderWineList() {
         
         wineItem.innerHTML = `
             <div class="wine-info">
-                <div class="wine-name">${wineName}</div>
-                <div class="wine-count">Quantity: <span class="count-value">${count}</span></div>
+                <div class="wine-name"></div>
+                <div class="wine-count">Quantity: <span class="count-value"></span></div>
             </div>
             <div class="wine-counter">
-                <button class="plus-btn" data-wine="${wineName}">+</button>
-                <div class="count-display">${count}</div>
+                <button class="plus-btn">+</button>
+                <div class="count-display"></div>
             </div>
         `;
         
+        // Use textContent for safe data insertion
+        wineItem.querySelector('.wine-name').textContent = wineName;
+        wineItem.querySelector('.count-value').textContent = count;
+        wineItem.querySelector('.count-display').textContent = count;
+
+        // Use dataset for safe attribute handling
+        wineItem.querySelector('.plus-btn').dataset.wine = wineName;
+
         wineList.appendChild(wineItem);
     });
 
