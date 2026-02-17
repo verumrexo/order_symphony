@@ -548,4 +548,24 @@ window.addEventListener('DOMContentLoaded', () => {
     initializeWines();
     renderWineList();
     attachEventListeners();
+
+    // Add event delegation for better performance
+    document.getElementById('wineList').addEventListener('click', (e) => {
+        const plusBtn = e.target.closest('.plus-btn');
+        const minusBtn = e.target.closest('.minus-btn');
+
+        if (plusBtn) {
+            const wineName = plusBtn.dataset.wine;
+            wines[wineName] = (wines[wineName] || 0) + 1;
+            saveWines();
+            renderWineList();
+        } else if (minusBtn) {
+            const wineName = minusBtn.dataset.wine;
+            if (wines[wineName] > 0) {
+                wines[wineName]--;
+                saveWines();
+                renderWineList();
+            }
+        }
+    });
 });
