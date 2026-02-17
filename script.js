@@ -492,8 +492,8 @@ const CIDO_DATA = [
 
 // Icons
 const ICONS = {
-    plus: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>`,
-    minus: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>`
+    plus: `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>`,
+    minus: `<svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/></svg>`
 };
 
 // Initialize the app
@@ -626,6 +626,8 @@ function renderOrderList(menuData = currentMenuData) {
             const minusBtn = document.createElement('button');
             minusBtn.className = 'counter-btn minus-btn';
             minusBtn.dataset.item = entry.name;
+            minusBtn.setAttribute('aria-label', `Decrease quantity for ${entry.name}`);
+            minusBtn.title = 'Decrease quantity';
             minusBtn.innerHTML = ICONS.minus;
 
             const countDisplay = document.createElement('div');
@@ -636,6 +638,8 @@ function renderOrderList(menuData = currentMenuData) {
             const plusBtn = document.createElement('button');
             plusBtn.className = 'counter-btn plus-btn';
             plusBtn.dataset.item = entry.name;
+            plusBtn.setAttribute('aria-label', `Increase quantity for ${entry.name}`);
+            plusBtn.title = 'Increase quantity';
             plusBtn.innerHTML = ICONS.plus;
 
             itemCounter.appendChild(minusBtn);
