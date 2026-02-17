@@ -504,7 +504,7 @@ function attachEventListeners() {
 }
 
 function copyToClipboard() {
-    const order = generateOrder(wines);
+    const order = generateOrder(wines, DEFAULT_WINES);
     
     // Check if wines are selected
     if (!Object.values(wines).some(count => count > 0)) {
@@ -563,7 +563,7 @@ if (typeof window !== 'undefined') {
 
 if (typeof module !== 'undefined' && module.exports) {
     module.exports = {
-        MENU_DATA,
+        MENU_DATA: DEFAULT_WINES,
         wines,
         initializeWines,
         saveWines,
@@ -576,24 +576,5 @@ window.addEventListener('DOMContentLoaded', () => {
     renderWineList();
     attachEventListeners();
 
-    // Add event delegation for better performance
-    document.getElementById('wineList').addEventListener('click', (e) => {
-        const plusBtn = e.target.closest('.plus-btn');
-        const minusBtn = e.target.closest('.minus-btn');
-
-        if (plusBtn) {
-            const wineName = plusBtn.dataset.wine;
-            wines[wineName] = (wines[wineName] || 0) + 1;
-            saveWines();
-            renderWineList();
-        } else if (minusBtn) {
-            const wineName = minusBtn.dataset.wine;
-            if (wines[wineName] > 0) {
-                wines[wineName]--;
-                saveWines();
-                renderWineList();
-            }
-        }
-    });
 });
 })();
