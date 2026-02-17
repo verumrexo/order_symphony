@@ -129,25 +129,19 @@ function renderWineList() {
 }
 
 function generateOrder() {
-    let order = 'WINE ORDER\n';
-    order += '='.repeat(40) + '\n\n';
+    let order = '';
 
     let hasItems = false;
-    let totalBottles = 0;
 
     Object.entries(wines).forEach(([wineName, count]) => {
         if (count > 0) {
             hasItems = true;
             order += `${wineName} ${count}pud\n`;
-            totalBottles += count;
         }
     });
 
     if (!hasItems) {
         order += 'No wines selected.\n';
-    } else {
-        order += '\n' + '='.repeat(40) + '\n';
-        order += `Total Bottles: ${totalBottles}\n`;
     }
 
     return order;
