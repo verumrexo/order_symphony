@@ -22,12 +22,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Deploy to main branch (publish to Pages source)
+      - name: Deploy to gh-pages branch (publish to Pages source)
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ./
-          publish_branch: main
+          publish_branch: gh-pages
           user_name: github-actions
           user_email: github-actions@github.com
           keep_files: false
