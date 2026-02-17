@@ -68,11 +68,11 @@ test('generateOrder defaults to "pud" when menuData is missing', () => {
     assert.strictEqual(actual, expected);
 });
 
-test('generateOrder defaults to "pud" when category not found', () => {
+test('generateOrder ignores items not in menuData', () => {
     const winesState = {
         'Unknown Wine': 5
     };
-    const expected = `Unknown Wine: 5pud\n`;
+    const expected = `No wines selected.\n`;
     const actual = generateOrder(winesState, mockMenu);
     assert.strictEqual(actual, expected);
 });

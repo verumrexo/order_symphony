@@ -365,6 +365,131 @@ const PLACEHOLDER_WINES = [
     }
 ];
 
+const CIDO_DATA = [
+    {
+        "type": "category",
+        "name": "SOFT DRINKS"
+    },
+    {
+        "type": "item",
+        "name": "Ūdens b/g Mangaļi 0.33l",
+        "price": "",
+        "unit": { "singular": "kaste", "plural": "kastes" }
+    },
+    {
+        "type": "item",
+        "name": "Ūdens a/g Mangaļi 0.33l",
+        "price": "",
+        "unit": { "singular": "kaste", "plural": "kastes" }
+    },
+    {
+        "type": "item",
+        "name": "Pepsi",
+        "price": "",
+        "unit": { "singular": "kaste", "plural": "kastes" }
+    },
+    {
+        "type": "item",
+        "name": "Pepsi Max",
+        "price": "",
+        "unit": { "singular": "kaste", "plural": "kastes" }
+    },
+    {
+        "type": "item",
+        "name": "Mirinda",
+        "price": "",
+        "unit": { "singular": "kaste", "plural": "kastes" }
+    },
+    {
+        "type": "item",
+        "name": "7Up",
+        "price": "",
+        "unit": { "singular": "kaste", "plural": "kastes" }
+    },
+    {
+        "type": "category",
+        "name": "MUCAS"
+    },
+    {
+        "type": "item",
+        "name": "Kvass",
+        "price": "",
+        "unit": { "singular": "muca", "plural": "mucas" }
+    },
+    {
+        "type": "item",
+        "name": "Madonas alus",
+        "price": "",
+        "unit": { "singular": "muca", "plural": "mucas" }
+    },
+    {
+        "type": "category",
+        "name": "SULAS"
+    },
+    {
+        "type": "item",
+        "name": "Apelsīnu",
+        "price": "",
+        "unit": { "singular": "kaste", "plural": "kastes" }
+    },
+    {
+        "type": "item",
+        "name": "Ābolu",
+        "price": "",
+        "unit": { "singular": "kaste", "plural": "kastes" }
+    },
+    {
+        "type": "item",
+        "name": "Tomātu",
+        "price": "",
+        "unit": { "singular": "kaste", "plural": "kastes" }
+    },
+    {
+        "type": "item",
+        "name": "Persiku",
+        "price": "",
+        "unit": { "singular": "kaste", "plural": "kastes" }
+    },
+    {
+        "type": "item",
+        "name": "Plūmju",
+        "price": "",
+        "unit": { "singular": "kaste", "plural": "kastes" }
+    },
+    {
+        "type": "category",
+        "name": "ATGRIEŠANA"
+    },
+    {
+        "type": "item",
+        "name": "15l mucas",
+        "price": "",
+        "labels": { "singular": "15l muca", "plural": "15l mucas" },
+        "isReturn": true
+    },
+    {
+        "type": "item",
+        "name": "30l mucas",
+        "price": "",
+        "labels": { "singular": "30l muca", "plural": "30l mucas" },
+        "isReturn": true
+    },
+    {
+        "type": "item",
+        "name": "Pilnas Pepsi kastes",
+        "price": "",
+        "labels": { "singular": "Pilna Pepsi kaste", "plural": "Pilnas Pepsi kastes" },
+        "isReturn": true
+    },
+    {
+        "type": "item",
+        "name": "Tukšas Pepsi kastes",
+        "price": "",
+        "labels": { "singular": "Tukša Pepsi kaste", "plural": "Tukšas Pepsi kastes" },
+        "isReturn": true
+    }
+];
+
 // Icons
 const ICONS = {
     plus: `<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>`,
@@ -403,6 +528,14 @@ function initializeWines() {
              }
         }
     });
+
+    CIDO_DATA.forEach(entry => {
+        if (entry.type === 'item') {
+             if (!wines.hasOwnProperty(entry.name)) {
+                 wines[entry.name] = savedWines[entry.name] || 0;
+             }
+        }
+    });
 }
 
 function saveWines() {
@@ -414,6 +547,8 @@ function switchMenu(menuName) {
         currentMenuData = DEFAULT_WINES;
     } else if (menuName === 'placeholder') {
         currentMenuData = PLACEHOLDER_WINES;
+    } else if (menuName === 'cido') {
+        currentMenuData = CIDO_DATA;
     }
     renderWineList(currentMenuData);
 }
@@ -475,12 +610,14 @@ function renderWineList(menuData = currentMenuData) {
             nameDiv.className = 'wine-name';
             nameDiv.textContent = entry.name;
 
-            const priceDiv = document.createElement('div');
-            priceDiv.className = 'wine-price';
-            priceDiv.textContent = entry.price;
-
             wineInfo.appendChild(nameDiv);
-            wineInfo.appendChild(priceDiv);
+
+            if (entry.price) {
+                const priceDiv = document.createElement('div');
+                priceDiv.className = 'wine-price';
+                priceDiv.textContent = entry.price;
+                wineInfo.appendChild(priceDiv);
+            }
 
             // Right: Counter
             const wineCounter = document.createElement('div');
