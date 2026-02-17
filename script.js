@@ -1,3 +1,4 @@
+(function() {
 // Menu data structure with categories, items, and prices
 const MENU_DATA = [
   {
@@ -548,3 +549,4 @@ window.addEventListener('DOMContentLoaded', () => {
     initializeWines();
     renderWineList();
 });
+})();
