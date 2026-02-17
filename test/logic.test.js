@@ -68,11 +68,22 @@ test('generateOrder defaults to "pud" when menuData is missing', () => {
     assert.strictEqual(actual, expected);
 });
 
-test('generateOrder defaults to "pud" when category not found', () => {
+test('generateOrder excludes wines not in menuData when menuData is provided', () => {
+    const winesState = {
+        'Unknown Wine': 5,
+        'Wine A': 2
+    };
+    // Unknown Wine should be filtered out
+    const expected = `Wine A: 2pud\n`;
+    const actual = generateOrder(winesState, mockMenu);
+    assert.strictEqual(actual, expected);
+});
+
+test('generateOrder returns "No wines selected." if all selected wines are filtered out', () => {
     const winesState = {
         'Unknown Wine': 5
     };
-    const expected = `Unknown Wine: 5pud\n`;
+    const expected = `No wines selected.\n`;
     const actual = generateOrder(winesState, mockMenu);
     assert.strictEqual(actual, expected);
 });
