@@ -468,32 +468,8 @@ function renderWineList() {
         }
     });
 
-    attachEventListeners();
 }
 
-function attachEventListeners() {
-    // Add event listeners to plus buttons
-    document.querySelectorAll('.plus-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const wineName = e.currentTarget.dataset.wine;
-            wines[wineName] = (wines[wineName] || 0) + 1;
-            saveWines();
-            renderWineList();
-        });
-    });
-
-    // Add event listeners to minus buttons
-    document.querySelectorAll('.minus-btn').forEach(btn => {
-        btn.addEventListener('click', (e) => {
-            const wineName = e.currentTarget.dataset.wine;
-            if (wines[wineName] > 0) {
-                wines[wineName]--;
-                saveWines();
-                renderWineList();
-            }
-        });
-    });
-}
 
 function copyToClipboard() {
     const order = generateOrder(wines);
@@ -547,4 +523,24 @@ document.getElementById('resetBtn').addEventListener('click', resetCounts);
 window.addEventListener('DOMContentLoaded', () => {
     initializeWines();
     renderWineList();
+
+    // Add event delegation for better performance
+    document.getElementById('wineList').addEventListener('click', (e) => {
+        const plusBtn = e.target.closest('.plus-btn');
+        const minusBtn = e.target.closest('.minus-btn');
+
+        if (plusBtn) {
+            const wineName = plusBtn.dataset.wine;
+            wines[wineName] = (wines[wineName] || 0) + 1;
+            saveWines();
+            renderWineList();
+        } else if (minusBtn) {
+            const wineName = minusBtn.dataset.wine;
+            if (wines[wineName] > 0) {
+                wines[wineName]--;
+                saveWines();
+                renderWineList();
+            }
+        }
+    });
 });
