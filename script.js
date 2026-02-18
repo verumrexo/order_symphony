@@ -320,7 +320,6 @@ const DEFAULT_MENU = [
 ];
 
 const BALTIC_XL_MENU = [
-
     {
         "type": "category",
         "name": "DZIRKSTOŠIE VĪNI"
@@ -332,61 +331,8 @@ const BALTIC_XL_MENU = [
     },
     {
         "type": "item",
-        "name": "Contadi Castaldi Franciacorta Brut, Lombardia, Italy (37.5cl)",
-        "price": "€29.00"
-    },
-    {
-        "type": "item",
-        "name": "Segura Viudas Rosado Brut, CAVA, Spain (75cl)",
-        "price": "€25.00"
-    },
-    {
-        "type": "item",
-        "name": "Tissot-Maire Cremant du Jura, Blanc de Blancs Brut, France (75cl)",
-        "price": "€32.00"
-    },
-    {
-        "type": "item",
         "name": "Les Cocottes Chardonnay non-alcoholic (75cl)",
         "price": "€6.00 / €28.00"
-    },
-    {
-        "type": "category",
-        "name": "ŠAMPANIETIS"
-    },
-    {
-        "type": "item",
-        "name": "Jean Pernet Le Mesnil Grand Cru Blanc de Blancs Brut (37.5cl)",
-        "price": "€39.00"
-    },
-    {
-        "type": "item",
-        "name": "Taittinger Brut Reserve (37.5cl)",
-        "price": "€39.00"
-    },
-    {
-        "type": "item",
-        "name": "Bollinger Special Cuvee (75cl)",
-        "price": "€99.00"
-    },
-    {
-        "type": "item",
-        "name": "Taittinger Prelude Grand Cru (75cl)",
-        "price": "€110.00"
-    },
-    {
-        "type": "category",
-        "name": "SĀRTVĪNS"
-    },
-    {
-        "type": "item",
-        "name": "Zenato Bardolino Chiaretto, Veneto, Italy (75cl)",
-        "price": "€6.00 / €25.00"
-    },
-    {
-        "type": "item",
-        "name": "Studio by Miraval Rose, France (75cl)",
-        "price": "€32.00"
     },
     {
         "type": "category",
@@ -394,33 +340,8 @@ const BALTIC_XL_MENU = [
     },
     {
         "type": "item",
-        "name": "Perrin La Vieille Ferme Blanc, France  (37,5cl)",
-        "price": "€12.00"
-    },
-    {
-        "type": "item",
-        "name": "El Coto Blanco, Rioja, Spain  (37,5cl)",
-        "price": "€14.00"
-    },
-    {
-        "type": "item",
-        "name": "Zenato Pinot Grigio delle Venezie, Italy  (37,5cl)",
-        "price": "€15.00"
-    },
-    {
-        "type": "item",
-        "name": "Louis Latour Bourgogne Chardonnay, France  (37,5cl)",
-        "price": "€22.00"
-    },
-    {
-        "type": "item",
         "name": "Dollfly river Sauvignon Blanc Marlborough, New Zealand (75 cl)",
         "price": "€6.50 / €29.00"
-    },
-    {
-        "type": "item",
-        "name": "Cascas Vinho Verde, Portugal (75 cl)",
-        "price": "€18.00"
     },
     {
         "type": "item",
@@ -433,33 +354,8 @@ const BALTIC_XL_MENU = [
         "price": "€21.00"
     },
     {
-        "type": "item",
-        "name": "Dr. Hermann Riesling Trocken (75cl)",
-        "price": "€29.00"
-    },
-    {
         "type": "category",
         "name": "SARKANVĪNI"
-    },
-    {
-        "type": "item",
-        "name": "Perrin La Vieille Ferme Rouge, France  (37,5cl)",
-        "price": "€12.00"
-    },
-    {
-        "type": "item",
-        "name": "E. Guigal Cotes-du-Rhone, France  (37,5cl)",
-        "price": "€19.00"
-    },
-    {
-        "type": "item",
-        "name": "El Coto de Rioja Crianza, Spain  (37,5cl)",
-        "price": "€15.00"
-    },
-    {
-        "type": "item",
-        "name": "San Felice Chianti Classico, Italy  (37,5cl)",
-        "price": "€22.00"
     },
     {
         "type": "item",
@@ -468,181 +364,8 @@ const BALTIC_XL_MENU = [
     },
     {
         "type": "item",
-        "name": "Cascas Tinto, Lisboa, Portugal (75 cl)",
-        "price": "€18.00"
-    },
-    {
-        "type": "item",
-        "name": "Arzuaga Crianza, Spain (75 cl)",
-        "price": "€29.00"
-    },
-    {
-        "type": "item",
-        "name": "Cono Sur Cabernet Sauvignon Reserva Especial, Chile (75 cl)",
-        "price": "€24.00"
-    },
-    {
-        "type": "item",
-        "name": "Salentein Killka Malbec Uco Valley, Mendoza, Argentina (75 cl)",
-        "price": "€29.00"
-    },
-    {
-        "type": "item",
         "name": "Conte di Campiano Riserva Primitivo, Italy (75 cl)",
         "price": "€25.00"
-    },
-    {
-        "type": "item",
-        "name": "Poesie Valpolicella Ripasso, Italy (75 cl)",
-        "price": "€25.00"
-    },
-    {
-        "type": "category",
-        "name": "ĪPAŠO VĪNU SELEKCIJA MŪSU GARDAJIEM GRILA ĒDIENIEM"
-    },
-    {
-        "type": "description",
-        "content": "Īpašo vīnu selekcijā, esam atlasījuši vīnus no ražotājiem, kuri vīnu ražo no ekoloģiski audzētām vīnogām, daži no tiem izmanto biodinamikas vai ilgtspējīgas vīnkopības principus."
-    },
-    {
-        "type": "category",
-        "name": "ŠAMPANIETIS"
-    },
-    {
-        "type": "item",
-        "name": "Ayala Brut Rose Majeur (75 cl)",
-        "price": "€95.00"
-    },
-    {
-        "type": "item",
-        "name": "Vilmart Grand Cellier d’Or Brut Millesime 2019 (75 cl)",
-        "price": "€150.00"
-    },
-    {
-        "type": "category",
-        "name": "DZIRKSTOŠIE VĪNI"
-    },
-    {
-        "type": "item",
-        "name": "Ruggeri Cartizze Prosecco di Valdobbiadene Brut, Veneto, Italy (75 cl)",
-        "price": "€39.00"
-    },
-    {
-        "type": "item",
-        "name": "Bellavista Alma Assemblage Franciacorta Extra Brut, Lombardia, Italy (75 cl)",
-        "price": "€65.00"
-    },
-    {
-        "type": "category",
-        "name": "SĀRTVĪNS"
-    },
-    {
-        "type": "item",
-        "name": "Miraval Rose, Provence, France (75 cl)",
-        "price": "€39.90"
-    },
-    {
-        "type": "category",
-        "name": "BALTVĪNI"
-    },
-    {
-        "type": "item",
-        "name": "Domaine Vacheron Sancerre, Loire, France 2024 (75 cl)",
-        "price": "€54.00"
-    },
-    {
-        "type": "item",
-        "name": "E.Guigal Condrieu, Rhone, France 2020 (75 cl)",
-        "price": "€89.00"
-    },
-    {
-        "type": "item",
-        "name": "Alois Lageder Pinot Grigio, Alto Adige, Italy 2023 (75 cl)",
-        "price": "€35.00"
-    },
-    {
-        "type": "item",
-        "name": "Pieropan Calvarino Soave Classico, Veneto, Italy 2023 (75 cl)",
-        "price": "€39.90"
-    },
-    {
-        "type": "item",
-        "name": "Hacienda Arinzano Chardonnay, Vino de Pago, Spain 2022 (75 cl)",
-        "price": "€35.00"
-    },
-    {
-        "type": "item",
-        "name": "Domane Wachau Gruner Veltliner Achleiten Smaragd, Austria 2023 (75 cl)",
-        "price": "€67.00"
-    },
-    {
-        "type": "category",
-        "name": "SARKANVĪNI"
-    },
-    {
-        "type": "item",
-        "name": "Mongeard Mugneret Bourgogne, France 2021 (75 cl)",
-        "price": "€59.00"
-    },
-    {
-        "type": "item",
-        "name": "Chateau La Tour Figeac St.Emilion Grand Cru Classe, Bordeaux 2020 (75 cl)",
-        "price": "€90.00"
-    },
-    {
-        "type": "item",
-        "name": "Coudolet de Beaucastel Cotes-du-Rhone, Rhone, France 2022 (75 cl)",
-        "price": "€59.00"
-    },
-    {
-        "type": "item",
-        "name": "E.Guigal Hermitage, Rhone, France 2020 (75 cl)",
-        "price": "€128.00"
-    },
-    {
-        "type": "item",
-        "name": "Tenuta Fertuna Lodai Cabernet Sauvignon Maremma, Toscana, Italy (75 cl)",
-        "price": "€36.00"
-    },
-    {
-        "type": "item",
-        "name": "il Poggione Brunello di Montalcino, Toscana, Italy 2019 (75 cl)",
-        "price": "€77.00"
-    },
-    {
-        "type": "item",
-        "name": "Planeta Santa Cecilia, Sicilia, Italy 2021 (75 cl)",
-        "price": "€55.00"
-    },
-    {
-        "type": "item",
-        "name": "Vietti Barolo, Piemonte, Italy 2021 (75 cl)",
-        "price": "€110.00"
-    },
-    {
-        "type": "item",
-        "name": "Pesquera Crianza, Ribera del Duero, Spain 2022 (75 cl)",
-        "price": "€39.00"
-    },
-    {
-        "type": "item",
-        "name": "Flor de Pingus, Ribera del Duero, Spain 2022 (75 cl)",
-        "price": "€178.00"
-    },
-    {
-        "type": "item",
-        "name": "Henschke Henry Seven Shiraz Grenache Viognier Barossa, Australia 2023 (75 cl)",
-        "price": "€52.00"
-    },
-    {
-        "type": "item",
-        "name": "Achaval Ferrer Quimera, Mendoza, Argentina 2021 (75 cl)",
-        "price": "€69.00"
-    },
-    {
-        "type": "item",
-        "name": "Double Diamond Cabernet Sauvignon, Napa Valley, California 2022 (75 cl)",
-        "price": ""
     },
     {
         "type": "category",
