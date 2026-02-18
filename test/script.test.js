@@ -116,6 +116,6 @@ test('resetCounts resets all items to 0', () => {
 
 test('switchMenu changes current menu', () => {
     // Basic test to ensure it runs without error
-    switchMenu('placeholder');
+    switchMenu('baltic_xl');
     switchMenu('interbaltija');
 });
