@@ -296,22 +296,26 @@ const DEFAULT_MENU = [
   {
     "type": "item",
     "name": "Ūdens b/g Acqua Panna 0.25l",
-    "price": "€2.80"
+    "price": "€2.80",
+    "unit": { "singular": "kaste", "plural": "kastes" }
   },
   {
     "type": "item",
     "name": "Ūdens b/g Acqua Panna 0.75l",
-    "price": "€5.80"
+    "price": "€5.80",
+    "unit": { "singular": "kaste", "plural": "kastes" }
   },
   {
     "type": "item",
     "name": "Ūdens a/g S.Pellegrino 0.25l",
-    "price": "€2.80"
+    "price": "€2.80",
+    "unit": { "singular": "kaste", "plural": "kastes" }
   },
   {
     "type": "item",
     "name": "Ūdens a/g S.Pellegrino 0.75l",
-    "price": "€5.80"
+    "price": "€5.80",
+    "unit": { "singular": "kaste", "plural": "kastes" }
   }
 ];
 

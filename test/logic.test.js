@@ -6,7 +6,11 @@ const mockMenu = [
     { type: 'category', name: 'Reds' },
     { type: 'item', name: 'Wine A' },
     { type: 'category', name: 'ŪDENS' },
-    { type: 'item', name: 'Water X' }
+    {
+        type: 'item',
+        name: 'Water X',
+        unit: { singular: 'kaste', plural: 'kastes' }
+    }
 ];
 
 test('generateOrder handles empty selection (all zeros)', () => {
@@ -42,8 +46,19 @@ test('generateOrder handles water selection with "kastes" suffix', () => {
         'Wine A': 0,
         'Water X': 3
     };
-    // Expected: "Water X: 3kastes\n"
-    const expected = `Water X: 3kastes\n`;
+    // Expected: "Water X: 3 kastes\n"
+    const expected = `Water X: 3 kastes\n`;
+    const actual = generateOrder(orderState, mockMenu);
+    assert.strictEqual(actual, expected);
+});
+
+test('generateOrder handles water selection singular', () => {
+    const orderState = {
+        'Wine A': 0,
+        'Water X': 1
+    };
+    // Expected: "Water X: 1 kaste\n"
+    const expected = `Water X: 1 kaste\n`;
     const actual = generateOrder(orderState, mockMenu);
     assert.strictEqual(actual, expected);
 });
@@ -53,8 +68,8 @@ test('generateOrder handles multiple selections mixed', () => {
         'Wine A': 2,
         'Water X': 3
     };
-    // Expected: "Wine A: 2pud\nWater X: 3kastes\n"
-    const expected = `Wine A: 2pud\nWater X: 3kastes\n`;
+    // Expected: "Wine A: 2pud\nWater X: 3 kastes\n"
+    const expected = `Wine A: 2pud\nWater X: 3 kastes\n`;
     const actual = generateOrder(orderState, mockMenu);
     assert.strictEqual(actual, expected);
 });
