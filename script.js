@@ -319,53 +319,143 @@ const DEFAULT_MENU = [
   }
 ];
 
-const PLACEHOLDER_MENU = [
+const BALTIC_XL_MENU = [
     {
         "type": "category",
-        "name": "DZIRKSTOŠIE VĪNI"
+        "name": "GIN"
     },
     {
         "type": "item",
-        "name": "Domus Picta Prosecco, Valdobbiadene, Italy (75cl)",
-        "price": "€6.50 / €29.00"
+        "name": "Hendrick’s Gin",
+        "price": ""
     },
     {
         "type": "item",
-        "name": "Les Cocottes Chardonnay non-alcoholic (75cl)",
-        "price": "€6.00 / €28.00"
-    },
-    {
-        "type": "category",
-        "name": "BALTVĪNI"
+        "name": "Hayman’s London Dry Gin",
+        "price": ""
     },
     {
         "type": "item",
-        "name": "Dollfly river Sauvignon Blanc Marlborgugh, New Zealand (75 cl)",
-        "price": "€6.50 / €29.00"
-    },
-    {
-        "type": "item",
-        "name": "Aragosta Vermentino Di Sardegna (75cl)",
-        "price": "€21.00"
-    },
-    {
-        "type": "item",
-        "name": "La Villete Chardonnay, France (75cl)",
-        "price": "€21.00"
+        "name": "Caorunn Scottish Gin",
+        "price": ""
     },
     {
         "type": "category",
-        "name": "SARKANVĪNI"
+        "name": "KONJAKI"
     },
     {
         "type": "item",
-        "name": "Zuccardi Serie A, Malbec, Argentina (75 cl)",
-        "price": "€6.50 / €29.00"
+        "name": "A.De Fussigny XO Fine Champagne Cognac",
+        "price": ""
+    },
+    {
+        "type": "category",
+        "name": "VODKA"
     },
     {
         "type": "item",
-        "name": "Conte di Campiano Riserva Primitivo, Italy (75 cl)",
-        "price": "€25.00"
+        "name": "Stolichnaya",
+        "price": ""
+    },
+    {
+        "type": "item",
+        "name": "Stolichnaya Elit",
+        "price": ""
+    },
+    {
+        "type": "category",
+        "name": "TEKILA"
+    },
+    {
+        "type": "item",
+        "name": "Rooster Rojo Blanco",
+        "price": ""
+    },
+    {
+        "type": "item",
+        "name": "Rooster Rojo Reposado",
+        "price": ""
+    },
+    {
+        "type": "category",
+        "name": "VISKIJS"
+    },
+    {
+        "type": "item",
+        "name": "Jameson",
+        "price": ""
+    },
+    {
+        "type": "item",
+        "name": "Monkey Sholder",
+        "price": ""
+    },
+    {
+        "type": "item",
+        "name": "Lagavulin Islay Single Malt 16y",
+        "price": ""
+    },
+    {
+        "type": "category",
+        "name": "VERMUTS"
+    },
+    {
+        "type": "item",
+        "name": "Martini Bianco",
+        "price": ""
+    },
+    {
+        "type": "item",
+        "name": "Campari",
+        "price": ""
+    },
+    {
+        "type": "item",
+        "name": "Aperol",
+        "price": ""
+    },
+    {
+        "type": "category",
+        "name": "RUMS"
+    },
+    {
+        "type": "item",
+        "name": "Havana Club gaišais",
+        "price": ""
+    },
+    {
+        "type": "item",
+        "name": "Havana Club tumšais",
+        "price": ""
+    },
+    {
+        "type": "item",
+        "name": "Plantatation Original Dark",
+        "price": ""
+    },
+    {
+        "type": "category",
+        "name": "CITI DZĒRIENI"
+    },
+    {
+        "type": "item",
+        "name": "Rīgas melnais balzāms Original",
+        "price": ""
+    },
+    {
+        "type": "item",
+        "name": "Rīgas melnais balzāms upeņu",
+        "price": ""
+    },
+    {
+        "type": "item",
+        "name": "Jagermeister",
+        "price": ""
+    },
+    {
+        "type": "item",
+        "name": "Calvados Busnel Hors d’Age",
+        "price": ""
     }
 ];
 
@@ -525,7 +615,7 @@ function initializeOrder() {
         }
     });
 
-    PLACEHOLDER_MENU.forEach(entry => {
+    BALTIC_XL_MENU.forEach(entry => {
         if (entry.type === 'item') {
              if (!orderState.hasOwnProperty(entry.name)) {
                  orderState[entry.name] = savedOrders[entry.name] || 0;
@@ -549,8 +639,8 @@ function saveOrder() {
 function switchMenu(menuName) {
     if (menuName === 'interbaltija') {
         currentMenuData = DEFAULT_MENU;
-    } else if (menuName === 'placeholder') {
-        currentMenuData = PLACEHOLDER_MENU;
+    } else if (menuName === 'baltic_xl') {
+        currentMenuData = BALTIC_XL_MENU;
     } else if (menuName === 'cido') {
         currentMenuData = CIDO_DATA;
     }
