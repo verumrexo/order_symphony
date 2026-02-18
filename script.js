@@ -359,11 +359,6 @@ const BALTIC_XL_MENU = [
     },
     {
         "type": "item",
-        "name": "E. Guigal Cotes-du-Rhone, France  (37,5cl)",
-        "price": "€19.00"
-    },
-    {
-        "type": "item",
         "name": "Zuccardi Serie A, Malbec, Argentina (75 cl)",
         "price": "€6.50 / €29.00"
     },
