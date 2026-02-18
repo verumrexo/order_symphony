@@ -276,7 +276,7 @@ h1 {
 }
 
 .feedback {
-    position: absolute;
+    position: fixed;
     bottom: 5rem;
     left: 50%;
     transform: translateX(-50%);
@@ -290,7 +290,18 @@ h1 {
     transition: opacity 0.3s;
     white-space: nowrap;
     backdrop-filter: blur(4px);
+    z-index: 60;
+}
+
+.floating-action-bar {
+    position: fixed;
+    bottom: 1.5rem;
+    right: 1.5rem;
     z-index: 50;
+    display: flex;
+    gap: 0.75rem;
+    border-radius: 1rem;
+    padding: 0.5rem;
 }
 
 .feedback.show {
