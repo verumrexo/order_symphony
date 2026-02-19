@@ -343,3 +343,8 @@ h1 {
 ::-webkit-scrollbar-thumb:hover {
     background: rgba(255, 255, 255, 0.2);
 }
+
+/* Ensure bottom content is accessible above the floating action bar */
+#orderList {
+    padding-bottom: 8rem;
+}
