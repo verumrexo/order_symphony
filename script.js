@@ -137,11 +137,6 @@ const DEFAULT_MENU = [
     "price": "€29.00"
   },
   {
-    "type": "item",
-    "name": "Poesie Valpolicella Ripasso, Italy (75 cl)",
-    "price": "€25.00"
-  },
-  {
     "type": "category",
     "name": "ĪPAŠO VĪNU SELEKCIJA MŪSU GARDAJIEM GRILA ĒDIENIEM"
   },
@@ -365,6 +360,11 @@ const BALTIC_XL_MENU = [
     {
         "type": "item",
         "name": "Conte di Campiano Riserva Primitivo, Italy (75 cl)",
+        "price": "€25.00"
+    },
+    {
+        "type": "item",
+        "name": "Poesie Valpolicella Ripasso, Italy (75 cl)",
         "price": "€25.00"
     },
     {
